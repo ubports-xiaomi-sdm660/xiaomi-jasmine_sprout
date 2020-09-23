@@ -7,6 +7,7 @@ HERE=$(pwd)
 source "${HERE}/deviceinfo"
 
 KERNEL_DIR="${TMPDOWN}/$(basename "${deviceinfo_kernel_source}")"
+KERNEL_DIR="${KERNEL_DIR%.*}"
 OUT="${TMPDOWN}/KERNEL_OBJ"
 
 mkdir -p "$OUT"
