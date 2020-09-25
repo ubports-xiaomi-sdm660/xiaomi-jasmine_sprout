@@ -24,9 +24,12 @@ cd "$TMPDOWN"
     git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9 -b pie-gsi --depth 1
     GCC_PATH="$TMPDOWN/aarch64-linux-android-4.9"
     if $deviceinfo_kernel_clang_compile; then
-        git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86 -b pie-gsi --depth 1
-        CLANG_PATH="$TMPDOWN/linux-x86/clang-4691093"
+        git clone https://github.com/AICP/prebuilts_clang_host_linux-x86 -b p9.0 --depth=1 linux-x86
+        CLANG_PATH="$TMPDOWN/linux-x86/clang-r365631c"
     fi
+    git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9 -b pie-gsi --depth 1
+    ARM32_TOOLCHAIN_PATH="$TMPDOWN/arm-linux-androideabi-4.9"
+    
     git clone "$deviceinfo_kernel_source" -b $deviceinfo_kernel_source_branch --depth 1
 
     curl --location --output halium-boot-ramdisk.img \
@@ -53,10 +56,13 @@ else
     "$SCRIPT/build-kernel.sh" "${TMPDOWN}" "${TMP}/system"
 fi
 
+PATH="$ARM32_TOOLCHAIN_PATH/bin:${PATH}" \
+    "$SCRIPT/build-kernel.sh" "${TMPDOWN}" "${TMP}/system"
+
 "$SCRIPT/make-bootimage.sh" "${TMPDOWN}/KERNEL_OBJ" "${TMPDOWN}/halium-boot-ramdisk.img" "${TMP}/partitions/boot.img"
 
 cp -av overlay/* "${TMP}/"
-"$SCRIPT/build-tarball-mainline.sh" pro1 "${OUT}" "${TMP}"
+"$SCRIPT/build-tarball-mainline.sh" jasmine_sprout "${OUT}" "${TMP}"
 
 rm -r "${TMP}"
 rm -r "${TMPDOWN}"

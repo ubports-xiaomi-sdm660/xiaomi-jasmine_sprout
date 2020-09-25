@@ -16,7 +16,7 @@ flashable:
   script:
     - apt update
     - apt install -y img2simg jq sudo wget xz-utils
-    - ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "pro1" ota
+    - ./build/fetch-and-prepare-latest-ota.sh "16.04/arm64/android9/devel" "jasmine_sprout" ota
     - mkdir -p out
     - ./build/system-image-from-ota.sh ota/ubuntu_command out
   artifacts:
