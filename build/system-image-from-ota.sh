@@ -227,8 +227,14 @@ do
                 system)
                     sudo umount "$SYSTEM_MOUNTPOINT"
                     rmdir "$SYSTEM_MOUNTPOINT"
-                    # Create fastboot flashable image
-                    img2simg "$OUT/rootfs.img" "$OUT/system.img"
+                    
+                    if [ $RAWIMG -eq 1 ];
+                    then
+                    	cp "$OUT/rootfs.img" "$OUT/system.img"
+                    else
+                    	# Create fastboot flashable image
+                        img2simg "$OUT/rootfs.img" "$OUT/system.img"
+                    fi
                 ;;
 
                 *)
