@@ -1,0 +1,21 @@
+description "hfd service for feedback support"
+
+start on started dbus and android
+stop on stopping dbus
+
+pre-start script
+    while true
+    do
+        hw_status=$(getprop hwservicemanager.ready)
+        if [ "$hw_status" = "true" ] ; then
+            echo "hwservicemanager service running"
+            sleep 1
+            exit 0
+        fi
+        echo "Waiting for hwservicemanager service"
+        sleep 1
+    done
+    exit 1
+end script
+
+exec hfd-service
