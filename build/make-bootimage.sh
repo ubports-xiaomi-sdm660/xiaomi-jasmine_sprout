@@ -22,13 +22,14 @@ if [ -d "$HERE/ramdisk-overlay" ]; then
         cd "$HERE/ramdisk-recovery"
         gzip -dc "$HERE/ramdisk-overlay/ramdisk-recovery.img" | cpio -i
         cp -r "$HERE/ramdisk-recovery-overlay"/* "$HERE/ramdisk-recovery"
-
-        find . | cpio -o -H newc | gzip >> "$HERE/ramdisk-overlay/ramdisk-recovery.img"
+        # Repack ramdisk-recovery.img
+        find . | cpio -o -H newc | gzip > "$HERE/ramdisk-overlay/ramdisk-recovery.img"
     fi
 
     cp "$RAMDISK" "${RAMDISK}-merged"
     RAMDISK="${RAMDISK}-merged"
     cd "$HERE/ramdisk-overlay"
+    # Append to halium-boot ramdisk
     find . | cpio -o -H newc | gzip >> "$RAMDISK"
 fi
 
