@@ -22,7 +22,7 @@ esac
 export ARCH
 export CROSS_COMPILE=$TMPDOWN/aarch64-linux-android-4.9/bin/aarch64-linux-android-
 export CROSS_COMPILE_ARM32=$TMPDOWN/arm-linux-androideabi-4.9/bin/arm-linux-androideabi-
-PATH=$$TMPDOWN/linux-x86/clang-r365631c/bin/:$TMPDOWN/aarch64-linux-android-4.9/bin/:$PATH
+PATH=$$TMPDOWN/linux-x86/bin/:$TMPDOWN/aarch64-linux-android-4.9/bin/:$PATH
 export PATH
 
 cd "$KERNEL_DIR"
