@@ -1,7 +1,22 @@
-# Wait more after finding bluetooth service
+stop on stopping lightdm
 
 pre-start script
-    rfkill unblock all
+    # Save bluetooth blocker status before unblock
+    rfkill list bluetooth | grep -q "yes" && touch /run/bt_blocked
+    rfkill unblock bluetooth
+
     /usr/bin/droid/bluebinder_wait.sh
+    # Wait more after finding bluetooth service
     sleep 10
+end script
+
+post-start script
+    /usr/bin/droid/bluebinder_post.sh
+
+    # Set bluetooth blocker status
+    sleep 1
+    if [ -e /run/bt_blocked ]; then
+        rfkill block bluetooth
+        rm /run/bt_blocked
+    fi
 end script
