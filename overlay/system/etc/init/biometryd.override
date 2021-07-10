@@ -1,0 +1,5 @@
+# Vendor binary android.​hardware.biometrics.fingerprint@2.1-service
+# searchs for the fpsensor device (gdx or fpc) in property vendor.boot.fpsensor
+# so we must copy ro.boot.fpsensor value to this property.
+
+pre-start exec setprop vendor.boot.fpsensor $(getprop ro.boot.fpsensor)
