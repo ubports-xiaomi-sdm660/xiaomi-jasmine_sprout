@@ -36,6 +36,14 @@ wget "$ROOTFS_URL" -P "$OUTPUT"
 mkdir -p "$OUTPUT/rootfs/system"
 cd "$OUTPUT/rootfs"
 sudo tar xpzf "../$file" --numeric-owner -C system
+
+# Enable SSH and USB tethering for debugging in devel-flashable builds
+echo "start on startup" > system/etc/init/ssh.override
+echo "exec /usr/sbin/sshd -D -o PasswordAuthentication=yes -o PermitEmptyPasswords=yes" >> system/etc/init/ssh.override
+
+echo "start on startup" > system/etc/init/usb-tethering.conf
+echo "exec /bin/bash /usr/bin/usb-tethering" >> system/etc/init/usb-tethering.conf
+
 sudo XZ_OPT=-1 tar cJf "../rootfs.tar.xz" system
 cd -
 sudo rm -rf "./$OUTPUT/rootfs"
